@@ -10,18 +10,20 @@
 <body>
     <header>
         <!-- title or start over? -->
+        <h1>Welcome!</h1>
         <!-- timer -->
+        <p>Time: <span id='timer'></span></p>
     </header>
 
     <main>
         <!-- title/ question -->
-        <h1 class="title">Coding Quiz Challenge</h1>
-        <h2 class="Question"></h1>
+        <h2 class="title">Coding Quiz Challenge</h1>
+        <h2 id="question"></h1>
         
         <!-- explination -->
         <section class="desc">
             <p>
-                Try to answer the following code-related questions within the time limit. <br>Keep in mind that incorrect answers will penalize your time/score by 10 seconds.
+                Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your time/score by 10 seconds.
             </p>
         </section>
 
@@ -33,12 +35,12 @@
 
         <!-- start/highscore buttons -->
         <section class="buttons">
-            <button type="button" class="show">Start Quiz</button>
-            <button type="button" class="show">View High Scores</button>
+            <button type="button" id="start" class="show toggle">Start Quiz</button>
+            <button type="button" id="scores" class="show toggle">View High Scores</button>
         </section>
 
         <!-- correct/wrong -->
-        <section class="result">
+        <section class="result-section">
             <!-- placeholder, delete after -->
             <p class="hide">Correct/wrong</p> 
         </section>
