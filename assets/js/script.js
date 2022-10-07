@@ -1,15 +1,16 @@
 var timerEl = document.querySelector('#timer');
 var buttonsEl = document.querySelector('.buttons'); //might be useless delete later
 var resultsEl = document.querySelector('.result-section');
-var toggleClass  = document.querySelectorAll('.toggle');
-var startBtn = document.querySelector('#start');
-var scoresBtn = document.querySelector('#scores');
 var questionEl = document.querySelector('#question');
 var titleEl = document.querySelector('.title');
 var descEl = document.querySelector('.desc');
 var olEL = document.querySelector('.choices');
+var toggleClass  = document.querySelectorAll('.toggle');
+var startBtn = document.querySelector('#start');
+var scoresBtn = document.querySelector('#scores');
 
 var timer; //quiz timer
+var timerInterval; // timer interval for quiz
 var timerIntervalResults; // able to have only once instance for results interval
 var quiz = {
     questions: [
@@ -29,26 +30,22 @@ var quiz = {
     ]
 }
 
-function load(){
+function loadTimer(){
     // makes it easier to change timer
     timer = 20;
     timerEl.textContent = timer;
 }
 
 function startQuiz() {
-    var oldTitleEl = titleEl.textContent;
-    var olddescEl = descEl.textContent;
+    hideStartScreen();
 
-    titleEl.textContent = '';
-    descEl.textContent = '';
-    
-    var timerInterval = setInterval(function(){
+    timerInterval = setInterval(function(){
         timer--;
         timerEl.textContent = timer;
         
         if(timer == 0){
             clearInterval(timerInterval);
-            resetPage(oldTitleEl, olddescEl);
+            endGame();
         }
     }, 1000);
     
@@ -56,8 +53,9 @@ function startQuiz() {
 }
 
 function loadQuestions(questionNumber){
+    olEL.textContent = '' // resets choice field
     questionEl.textContent = quiz.questions[questionNumber];
-    olEL.textContent = ''
+    
     for(var i = 0; i < quiz.choices[questionNumber].length; i++){
         var tag = document.createElement('li');
         tag.textContent = quiz.choices[questionNumber][i];
@@ -68,38 +66,23 @@ function loadQuestions(questionNumber){
         if(event.target.textContent == quiz.answer[questionNumber]){
             console.log('correct');
         }
+
         questionNumber++;
 
         if(questionNumber == 4){
-            timer= 1;
+            clearInterval(timerInterval)
+            endGame();
         }else{
             loadQuestions(questionNumber);
         }
     });
 }
 
-function resetPage(title, desc) {
-    //resets page to default start
-
-    load();
-    titleEl.textContent = title;
-    descEl.textContent = desc
+function endGame(){
     questionEl.textContent = ''
-    toggleButtons();
     olEL.textContent = '';
-}
-
-function toggleButtons(){
-    if(buttonsEl.children[0].getAttribute('class') == 'hide'){
-        //hides buttons
-        for(var i = 0; i < buttonsEl.children.length; i++)
-            buttonsEl.children[i].setAttribute('class', 'show');
-    }else{
-        //shows buttons
-        for(var i = 0; i < buttonsEl.children.length; i++)
-            buttonsEl.children[i].setAttribute('class', 'hide');
-    }
-    
+    loadTimer();
+    showStartScreen();
 }
 
 function showResults(){
@@ -117,17 +100,23 @@ function showResults(){
     }, 1000);
 }
 
-//buttons.addEventListener('click', showResults);
+function hideStartScreen() {
+    titleEl.setAttribute('class', 'hide');
+    descEl.setAttribute('class', 'hide');
+    
+    for(var i = 0; i < buttonsEl.children.length; i++)
+        buttonsEl.children[i].setAttribute('class', 'hide');
+}
 
-// !!! might be useless - delete later !!!!
-// for(var i = 0; i < buttons.children.length; i++){
-//     buttons.children[i].addEventListener('click', toggleButtons);
-// }
-
-for(var i = 0; i < toggleClass.length; i++){
-    toggleClass[i].addEventListener('click', toggleButtons);
+function showStartScreen() {
+    titleEl.setAttribute('class', 'show');
+    descEl.setAttribute('class', 'show');
+    
+    for(var i = 0; i < buttonsEl.children.length; i++)
+        buttonsEl.children[i].setAttribute('class', 'show');
 }
 
 startBtn.addEventListener('click', startQuiz);
+//scoresBtn.addEventListener('click', )
 
-load();
+loadTimer();
