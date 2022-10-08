@@ -2,14 +2,17 @@ var timerEl = document.querySelector('#timer');
 var buttonsEl = document.querySelector('.buttons'); //might be useless delete later
 var resultsEl = document.querySelector('.result-section');
 var questionEl = document.querySelector('#question');
+var answerResult = document.querySelector('#result');
+var finalScore = document.querySelector('#final-score');
+var submissionForm = document.getElementById('submission-form');
 var titleEl = document.querySelector('.title');
 var descEl = document.querySelector('.desc');
 var olEL = document.querySelector('.choices');
-var toggleClass  = document.querySelectorAll('.toggle');
 var startBtn = document.querySelector('#start');
 var scoresBtn = document.querySelector('#scores');
 
 var timer; //quiz timer
+var score;
 var timerInterval; // timer interval for quiz
 var timerIntervalResults; // able to have only once instance for results interval
 var quiz = {
@@ -37,8 +40,10 @@ function loadTimer(){
 }
 
 function startQuiz() {
+    score = 0;
     hideStartScreen();
 
+    // starts/handles timer
     timerInterval = setInterval(function(){
         timer--;
         timerEl.textContent = timer;
@@ -52,52 +57,86 @@ function startQuiz() {
     loadQuestions(0);
 }
 
+//loads question/choices onto the screen
 function loadQuestions(questionNumber){
-    olEL.textContent = '' // resets choice field
+    olEL.textContent = ''; // resets choice field
     questionEl.textContent = quiz.questions[questionNumber];
     
+    // loads choices
     for(var i = 0; i < quiz.choices[questionNumber].length; i++){
         var tag = document.createElement('li');
         tag.textContent = quiz.choices[questionNumber][i];
         olEL.append(tag);
     }
-
+    
+    //adds eventlisteners to for choices
     olEL.addEventListener('click', function(event){
-        if(event.target.textContent == quiz.answer[questionNumber]){
-            console.log('correct');
+        if(isCorrect(questionNumber, event.target.textContent)){
+            answerResult.textContent = 'Correct!';
+            showResult();
+        }else{
+            answerResult.textContent = 'Incorrect';
+            showResult();
         }
 
         questionNumber++;
 
-        if(questionNumber == 4){
-            clearInterval(timerInterval)
-            endGame();
+        if(questionNumber < 4){
+            olEL.removeEventListener('click', arguments.callee);
+            loadQuestions(questionNumber);  //loads the next question
         }else{
-            loadQuestions(questionNumber);
+            clearInterval(timerInterval);
+            olEL.removeEventListener('click', arguments.callee);
+            endGame();
         }
     });
 }
 
-function endGame(){
-    questionEl.textContent = ''
-    olEL.textContent = '';
-    loadTimer();
-    showStartScreen();
+//checks if user got question correct
+function isCorrect(question, answer) {
+    if(quiz.answer[question] == answer){
+        score++;
+        return true;
+    }
+    else
+        return false;
 }
 
-function showResults(){
+// previous question results
+function showResult(){
     clearInterval(timerIntervalResults);
-    var secondsLeft = 3;
-    resultsEl.children[0].setAttribute('class', 'show');
-    
+    var secondsLeft = 2;
+    answerResult.parentElement.setAttribute('class', 'show');
+
     timerIntervalResults = setInterval(function() {
         secondsLeft--;
 
         if(secondsLeft === 0){
             clearInterval(timerIntervalResults);
-            resultsEl.children[0].setAttribute('class', 'hide');
+            answerResult.parentElement.setAttribute('class', 'hide');
         }
     }, 1000);
+}
+
+function endGame(){
+    questionEl.textContent = '';
+    olEL.textContent = '';
+    quizResults();
+    //loadTimer();
+    //showStartScreen();
+}
+
+function quizResults(){
+    resultsEl.classList.replace('hide', 'show');
+
+    finalScore.textContent = score;
+
+    submissionForm.addEventListener('submit', function(event){
+        event.preventDefault();
+    
+        var intials = document.getElementById('initials').value;
+        console.log(intials);
+    })
 }
 
 function hideStartScreen() {
