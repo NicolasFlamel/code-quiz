@@ -33,16 +33,26 @@
             </ol>
         </section>
 
-        <!-- start/highscore buttons -->
-        <section class="buttons">
-            <button type="button" id="start" class="show toggle">Start Quiz</button>
-            <button type="button" id="scores" class="show toggle">View High Scores</button>
+        <section class="hide">
+            <p id="result">Correct/Incorrect</p>
         </section>
 
-        <!-- correct/wrong -->
-        <section class="result-section">
-            <!-- placeholder, delete after -->
-            <p class="hide">Correct/wrong</p> 
+        <!-- start/highscore buttons -->
+        <section class="buttons">
+            <button type="button" id="start" class="show">Start Quiz</button>
+            <button type="button" id="scores" class="show">View High Scores</button>
+        </section>
+
+        <!-- quiz result -->
+        <section class="result-section hide">
+            <!-- final score -->
+            <h2>Congratulations!</h2>
+            <p>You're score is: <span id="final-score">0</span></p> 
+            <form id="submission-form">
+                <label for="initials">Enter your initials: </label>
+                <input type="text" name="initials" id="initials">
+                <input type="submit" value="Submit">
+            </form>
         </section>
     </main>
     <script src="./assets/js/script.js"></script>
