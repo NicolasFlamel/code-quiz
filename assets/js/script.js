@@ -13,6 +13,8 @@ var scoresBtn = document.querySelector('#scores');
 
 var timer; //quiz timer
 var score;
+var scoreList = JSON.parse(localStorage.getItem('scoreList')) || [];
+var penalty = 10;
 var timerInterval; // timer interval for quiz
 var timerIntervalResults; // able to have only once instance for results interval
 var quiz = {
@@ -31,7 +33,7 @@ var quiz = {
         ['2', '3', '5', '6'],
         ['link', 'ref', 'href', 'newref']
     ]
-}
+};
 
 function loadTimer(){
     // makes it easier to change timer
@@ -45,12 +47,12 @@ function startQuiz() {
 
     // starts/handles timer
     timerInterval = setInterval(function(){
-        timer--;
-        timerEl.textContent = timer;
-        
-        if(timer == 0){
+        if(timer < 1){
             clearInterval(timerInterval);
             endGame();
+        }else{
+            timer--;
+            timerEl.textContent = timer;
         }
     }, 1000);
     
@@ -75,13 +77,15 @@ function loadQuestions(questionNumber){
             answerResult.textContent = 'Correct!';
             showResult();
         }else{
+            timer-=penalty; // decrease timer because of incorrect choice
+            timerEl.textContent = timer;
             answerResult.textContent = 'Incorrect';
             showResult();
         }
 
         questionNumber++;
 
-        if(questionNumber < 4){
+        if(questionNumber < quiz.questions.length){
             olEL.removeEventListener('click', arguments.callee);
             loadQuestions(questionNumber);  //loads the next question
         }else{
@@ -121,6 +125,8 @@ function showResult(){
 function endGame(){
     questionEl.textContent = '';
     olEL.textContent = '';
+    timer = 0;
+    timerEl.textContent = timer;
     quizResults();
     //loadTimer();
     //showStartScreen();
@@ -134,8 +140,9 @@ function quizResults(){
     submissionForm.addEventListener('submit', function(event){
         event.preventDefault();
     
-        var intials = document.getElementById('initials').value;
-        console.log(intials);
+        var initials = document.getElementById('initials').value + ' - ';
+        scoreList.push(initials + score);
+        localStorage.setItem('scoreList', JSON.stringify(scoreList));
     })
 }
 
