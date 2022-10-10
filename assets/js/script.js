@@ -25,22 +25,51 @@ var quiz = {
         'What does HTML stands for?', 
         'Which of the following HTML element is used for creating an unordered list?', 
         'How many heading tags are there in HTML5?', 
-        'Which of the following attributes is used to add link to any element?'
+        'Which of the following attributes is used to add link to any element?',
+        'What does CSS stand for?',
+        'How do you insert a comment in a CSS file?',
+        'Which CSS property controls the text size?',
+        'How do you select an element with id "demo"?',
+        'What will be the output of the following code snippet var word = "JavaScript" console.log(word.charAt(4))',
+        'What is the type of variable data declare below const data=[]',
+        'Which of the following represents loops in javascript',
+        'Which function of an Array object calls a function for each element in the array?'
     ],
-    answer: ['Hypertext Markup Language.', '<ul>', '6', 'href'],
+    answer: [
+        'Hypertext Markup Language.', 
+        '<ul>', 
+        '6', 
+        'href', 
+        'Cascading Style Sheets',
+        '/* this is a comment */',
+        'font-size',
+        '#demo',
+        'S',
+        'Array',
+        'All of the above',
+        'forEach()'
+    ],
     
     // double array [x][y] x=question y=choices
     choices: [ 
         ['Hypertext Machine language.', 'Hypertext and links markup language.', 'Hypertext Markup Language.', 'Hightext machine language.'],
         ['<ui>', '<i>', '<em>', '<ul>'],
         ['2', '3', '5', '6'],
-        ['link', 'ref', 'href', 'newref']
+        ['link', 'ref', 'href', 'newref'],
+        ['Cascading Style Sheets', 'Colorful Style Sheets', 'Creative Style Sheets', 'Computer Style Sheets'],
+        ['/* this is a comment */', '// this is a comment', '// this is a comment //', "' this is a comment"],
+        ['font-style', 'text-style', 'font-size', 'text-size'],
+        ['demo', '#demo', '.demo', '*demo'],
+        ['v', 'J', 'S', 'a'],
+        ['Array', 'string', 'object', 'None of the above'],
+        ['for', 'while', 'forEach', 'All of the above'],
+        ['every()', 'forEach()', 'forEvery()', 'each()']
     ]
 };
 
 function loadTimer(){
     // makes it easier to change timer
-    timer = 20;
+    timer = 60;
     timerEl.textContent = timer;
 }
 
