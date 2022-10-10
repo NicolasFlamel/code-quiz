@@ -9,7 +9,6 @@
 </head>
 <body>
     <header>
-        <!-- title or start over? -->
         <h1>Welcome!</h1>
         <!-- timer -->
         <p>Time: <span id='timer'></span></p>
@@ -17,34 +16,29 @@
 
     <main>
         <!-- title/explination -->
-        <section class="desc show">
-            <h1 class="title">Coding Quiz Challenge</h1>
+        <section id="start-screen" class="show">
+            <h2>Coding Quiz Challenge</h2>
             <p>
                 Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your time/score by 10 seconds.
             </p>
-        </section>
-        
-        <!-- start/highscore buttons -->
-        <section class="buttons show">
             <button type="button" id="start-btn" class="show">Start Quiz</button>
             <button type="button" id="scores-btn" class="show">View High Scores</button>
         </section>
 
         <!-- question & choices for question -->
-        <section id="quiz" class="hide">
+        <section id="quiz" class="show">
             <h2 id="question"></h2>
             
-            <ol class="choices">
+            <ol id="choices">
             </ol>
         </section>
 
-        <section class="hide">
-            <p id="result">Correct/Incorrect</p>
+        <section  id="result" class="hide">
+            <p>Correct/Incorrect</p>
         </section>
 
-
         <!-- quiz result -->
-        <section class="result-section hide">
+        <section id="result-section" class="hide">
             <!-- final score -->
             <h2>Congratulations!</h2>
             <p>You're score is: <span id="final-score">0</span></p> 

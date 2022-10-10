@@ -1,13 +1,11 @@
 var timerEl = document.querySelector('#timer');
-var buttonsEl = document.querySelector('.buttons'); //might be useless delete later
-var resultsEl = document.querySelector('.result-section');
+var resultsEl = document.querySelector('#result-section');
 var questionEl = document.querySelector('#question');
 var answerResult = document.querySelector('#result');
 var finalScore = document.querySelector('#final-score');
 var submissionForm = document.getElementById('submission-form');
-var titleEl = document.querySelector('.title');
-var descEl = document.querySelector('.desc');
-var choicesOlEL = document.querySelector('.choices');
+var startScreenEl = document.querySelector('#start-screen');
+var choicesOlEL = document.querySelector('#choices');
 var quizEl = document.querySelector('#quiz');
 var highScoresEl = document.querySelector('#high-scores');
 var scoresListOlEl = document.querySelector('#scores-list');
@@ -18,8 +16,8 @@ var clearScoresBtn = document.querySelector('#clear-scores-btn');
 
 var timer; //quiz timer
 var score;
-var scoreList = JSON.parse(localStorage.getItem('scoreList')) || [];
 var penalty = 10;
+var scoreList = JSON.parse(localStorage.getItem('scoreList')) || [];
 var timerInterval; // timer interval for quiz
 var timerIntervalResults; // able to have only once instance for results interval
 var quiz = {
@@ -80,12 +78,12 @@ function loadQuestions(questionNumber){
     //adds eventlisteners to for choices
     choicesOlEL.addEventListener('click', function(event){
         if(isCorrect(questionNumber, event.target.textContent)){
-            answerResult.textContent = 'Correct!';
+            answerResult.firstElementChild.textContent = 'Correct!';
             showResult();
         }else{
             timer-=penalty; // decrease timer because of incorrect choice
             timerEl.textContent = timer;
-            answerResult.textContent = 'Incorrect';
+            answerResult.firstElementChild.textContent = 'Incorrect';
             showResult();
         }
 
@@ -116,14 +114,14 @@ function isCorrect(question, answer) {
 function showResult(){
     clearInterval(timerIntervalResults);
     var secondsLeft = 2;
-    answerResult.parentElement.classList.replace('hide', 'show');
+    answerResult.classList.replace('hide', 'show');
 
     timerIntervalResults = setInterval(function() {
         secondsLeft--;
 
         if(secondsLeft === 0){
             clearInterval(timerIntervalResults);
-            answerResult.parentElement.classList.replace('show', 'hide');
+            answerResult.classList.replace('show', 'hide');
         }
     }, 1000);
 }
@@ -136,6 +134,7 @@ function endGame(){
     quizResults();
 }
 
+//results of quiz and enter your initials
 function quizResults(){
     resultsEl.classList.replace('hide', 'show');
 
@@ -148,13 +147,14 @@ function quizResults(){
         scoreList.push(initials + score);
         localStorage.setItem('scoreList', JSON.stringify(scoreList));
         resultsEl.classList.replace('show', 'hide');
-        submissionForm.removeEventListener('click', arguments.callee);
+        submissionForm.removeEventListener('submit', arguments.callee);
 
         loadTimer();
         showStartScreen();
     })
 }
 
+//view highscores and able to reset it
 function viewHighScores(){
     hideStartScreen();
     scoresListOlEl.textContent = '';
@@ -172,6 +172,7 @@ function viewHighScores(){
     clearScoresBtn.addEventListener('click', clearScores);
 }
 
+//back to main screen
 function goBack() {
     scoresListOlEl.classList.replace('show', 'hide');
     highScoresEl.classList.replace('show', 'hide');
@@ -179,6 +180,7 @@ function goBack() {
     goBackBtn.removeEventListener('click', goBack);
 }
 
+//clears local storage/scores
 function clearScores() {
     scoreList = [];
     scoresListOlEl.textContent = '';
@@ -188,17 +190,11 @@ function clearScores() {
 }
 
 function hideStartScreen() {
-    titleEl.classList.replace('show', 'hide');
-    descEl.classList.replace('show', 'hide');
-    
-    buttonsEl.classList.replace('show', 'hide');
+    startScreenEl.classList.replace('show', 'hide');
 }
 
 function showStartScreen() {
-    titleEl.classList.replace('hide', 'show');
-    descEl.classList.replace('hide', 'show');
-    
-    buttonsEl.classList.replace('hide', 'show');
+    startScreenEl.classList.replace('hide', 'show');
 }
 
 startBtn.addEventListener('click', startQuiz);
