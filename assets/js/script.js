@@ -118,7 +118,7 @@ function loadQuestions(questionNumber){
 
         questionNumber++;
 
-        if(questionNumber < quiz.questions.length){
+        if(questionNumber < quiz.questions.length && timer > 0){
             choicesOlEL.removeEventListener('click', arguments.callee);
             loadQuestions(questionNumber);  //loads the next question
         }else{
@@ -172,7 +172,8 @@ function quizResults(){
     submissionForm.addEventListener('submit', function(event){
         event.preventDefault();
         var initials = document.getElementById('initials').value + ' - ';
-        
+        initials = initials.toUpperCase();
+
         scoreList.push(initials + score);
         localStorage.setItem('scoreList', JSON.stringify(scoreList));
         resultsEl.classList.replace('show', 'hide');
